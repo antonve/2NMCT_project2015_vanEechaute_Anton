@@ -1,6 +1,9 @@
 package be.howest.nmct.project2015;
 
 import android.app.Fragment;
+import android.app.LoaderManager;
+import android.content.Loader;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,9 +15,13 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
-public class GMapFragment extends Fragment {
+import be.howest.nmct.project2015.Loader.ParkingLoader;
+
+public class GMapFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private GoogleMap map;
+
+
 
     public GMapFragment() {
 
@@ -38,5 +45,27 @@ public class GMapFragment extends Fragment {
         map.getUiSettings().setMapToolbarEnabled(false);
         map.getUiSettings().setAllGesturesEnabled(true);
         map.getUiSettings().setRotateGesturesEnabled(false);
+    }
+
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        // Start Loader
+        getLoaderManager().initLoader(0, null, this);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        return new ParkingLoader(getActivity());
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> cursorLoader) {
     }
 }
