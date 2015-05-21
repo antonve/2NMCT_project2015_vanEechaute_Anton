@@ -9,6 +9,9 @@ import android.view.MenuItem;
 
 public class MainActivity extends Activity implements GMapFragment.onChangeFragmentListener, FragmentManager.OnBackStackChangedListener {
 
+    private boolean isFinishedLoading = false;
+    private boolean isListShown = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,8 +32,17 @@ public class MainActivity extends Activity implements GMapFragment.onChangeFragm
         showFragmentDetail(lot);
     }
 
+    @Override
+    public void onFinishLoading() {
+        isFinishedLoading = true;
+        invalidateOptionsMenu();
+    }
+
     private void showFragmentDetail(ParkingLot lot) {
         DetailFragment fragment = DetailFragment.newInstance(lot);
+
+        isListShown = true;
+        invalidateOptionsMenu();
 
         getFragmentManager().beginTransaction()
                 .add(R.id.container, fragment)
@@ -39,7 +51,10 @@ public class MainActivity extends Activity implements GMapFragment.onChangeFragm
     }
 
     private void showFragmentList() {
-        ParkingLotListFragment fragment = new ParkingLotListFragment();
+        GMapFragment gmap = ((GMapFragment) getFragmentManager().findFragmentById(R.id.container));
+        ParkingLotListFragment fragment = ParkingLotListFragment.newInstance(gmap.getParkingLotData());
+        isListShown = true;
+        invalidateOptionsMenu();
 
         getFragmentManager().beginTransaction()
                 .add(R.id.container, fragment)
@@ -64,6 +79,11 @@ public class MainActivity extends Activity implements GMapFragment.onChangeFragm
     public boolean onNavigateUp() {
         getFragmentManager().popBackStack();
 
+        if (getFragmentManager().getBackStackEntryCount() == 1) {
+            isListShown = false;
+            invalidateOptionsMenu();
+        }
+
         return true;
     }
 
@@ -72,6 +92,8 @@ public class MainActivity extends Activity implements GMapFragment.onChangeFragm
         // Inflate the menu items for use in the action bar
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
+
+        menu.findItem(R.id.view_list).setEnabled(isFinishedLoading & !isListShown);
 
         return super.onCreateOptionsMenu(menu);
     }

@@ -32,6 +32,11 @@ public class GMapFragment extends Fragment implements LoaderManager.LoaderCallba
 
     }
 
+    public Cursor getParkingLotData()
+    {
+        return mCursor;
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -99,6 +104,8 @@ public class GMapFragment extends Fragment implements LoaderManager.LoaderCallba
                 }
             });
         }
+
+        changeFragmentListener.onFinishLoading();
     }
 
     @Override
@@ -128,5 +135,6 @@ public class GMapFragment extends Fragment implements LoaderManager.LoaderCallba
     // communicate with other fragments
     public interface onChangeFragmentListener {
         void onSelectDetail(ParkingLot lot);
+        void onFinishLoading();
     }
 }
