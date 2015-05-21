@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Park in Ghent</string>
     <string name="Call">Call</string>
+    <string name="view_in_list">View list</string>
 </resources>
