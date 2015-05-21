@@ -7,6 +7,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.google.android.gms.maps.model.Marker;
+
 public class MainActivity extends Activity implements GMapFragment.onChangeFragmentListener, FragmentManager.OnBackStackChangedListener {
 
     private boolean isFinishedLoading = false;
@@ -30,6 +32,20 @@ public class MainActivity extends Activity implements GMapFragment.onChangeFragm
     @Override
     public void onSelectDetail(ParkingLot lot) {
         showFragmentDetail(lot);
+    }
+
+
+    @Override
+    public void onSelectDetailByMarker(Marker marker) {
+        GMapFragment gmap = ((GMapFragment) getFragmentManager().findFragmentById(R.id.container));
+
+        for (ParkingLot lot : gmap.getParkingLotData()) {
+            String title = marker.getTitle();
+            if (lot.description.equals(title)) {
+                showFragmentDetail(lot);
+                return;
+            }
+        }
     }
 
     @Override

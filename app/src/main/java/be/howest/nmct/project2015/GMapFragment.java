@@ -18,12 +18,15 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+
 import be.howest.nmct.project2015.Loader.ParkingLoader;
 
 public class GMapFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private GoogleMap mMap;
     private Cursor mCursor;
+    private ArrayList<ParkingLot> mParkingLots;
     private onChangeFragmentListener changeFragmentListener;
 
     private final static String TAG_FRAGMENT = "MAP";
@@ -32,9 +35,19 @@ public class GMapFragment extends Fragment implements LoaderManager.LoaderCallba
 
     }
 
-    public Cursor getParkingLotData()
+    public ArrayList<ParkingLot> getParkingLotData()
     {
-        return mCursor;
+        if (mParkingLots == null) {
+            mParkingLots = new ArrayList<>();
+
+            for (int i = 0; i < mCursor.getCount(); i++) {
+                mCursor.moveToPosition(i);
+
+                mParkingLots.add(ParkingLot.ParkingLotFromCursor(mCursor));
+            }
+        }
+
+        return mParkingLots;
     }
 
     @Override
@@ -91,7 +104,7 @@ public class GMapFragment extends Fragment implements LoaderManager.LoaderCallba
                 text += " | " + parkingLot.capacity_available + " spots available";
             }
 
-            mMap.addMarker(new MarkerOptions()
+            Marker marker = mMap.addMarker(new MarkerOptions()
                     .title(parkingLot.description)
                     .snippet(text)
                     .position(new LatLng(parkingLot.lat, parkingLot.lng))
@@ -100,7 +113,7 @@ public class GMapFragment extends Fragment implements LoaderManager.LoaderCallba
             mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                 @Override
                 public void onInfoWindowClick(Marker mark) {
-                    changeFragmentListener.onSelectDetail(parkingLot);
+                    changeFragmentListener.onSelectDetailByMarker(mark);
                 }
             });
         }
@@ -135,6 +148,7 @@ public class GMapFragment extends Fragment implements LoaderManager.LoaderCallba
     // communicate with other fragments
     public interface onChangeFragmentListener {
         void onSelectDetail(ParkingLot lot);
+        void onSelectDetailByMarker(Marker marker);
         void onFinishLoading();
     }
 }

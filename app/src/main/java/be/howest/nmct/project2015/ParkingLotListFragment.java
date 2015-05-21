@@ -35,18 +35,10 @@ public class ParkingLotListFragment extends ListFragment {
         }
     }
 
-    public static ParkingLotListFragment newInstance(Cursor cursor) {
+    public static ParkingLotListFragment newInstance(ArrayList<ParkingLot> lots) {
         ParkingLotListFragment fragment = new ParkingLotListFragment();
 
         Bundle args = new Bundle();
-        ArrayList<ParkingLot> lots = new ArrayList<>();
-
-        for (int i = 0; i < cursor.getCount(); i++) {
-            cursor.moveToPosition(i);
-
-            lots.add(ParkingLot.ParkingLotFromCursor(cursor));
-        }
-
         args.putSerializable(PARKING_LOTS, lots);
         fragment.setArguments(args);
 
