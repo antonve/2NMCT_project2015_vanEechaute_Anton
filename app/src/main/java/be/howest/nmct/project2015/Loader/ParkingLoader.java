@@ -90,17 +90,17 @@ public class ParkingLoader extends AsyncTaskLoader<Cursor> {
                         while (reader.hasNext()) {
                             reader.beginObject();
 
-                            int id = 0,
+                            int     id = 0,
                                     capacity_available = 0,
                                     capacity_total = 0;
-                            String description = "",
+                            String  description = "",
                                     code = "",
                                     address_text = "",
                                     phone_prefix = "",
                                     phone_number = "";
                             boolean full = false,
                                     open = false;
-                            double lat = 0.0,
+                            double  lat = 0.0,
                                     lng = 0.0;
 
                             // loop parking lot properties
@@ -147,8 +147,8 @@ public class ParkingLoader extends AsyncTaskLoader<Cursor> {
                             row.add(phone_number);
                             row.add(capacity_available);
                             row.add(capacity_total);
-                            row.add(full);
-                            row.add(open);
+                            row.add(full == true ? 1 : 0);
+                            row.add(open == true ? 1 : 0);
 
                             reader.endObject();
                         }

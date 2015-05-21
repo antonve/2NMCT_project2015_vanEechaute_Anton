@@ -5,7 +5,6 @@ import android.app.LoaderManager;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,15 +35,6 @@ public class GMapFragment extends Fragment implements LoaderManager.LoaderCallba
     }
 
     public void initMap(){
-        map = ((MapFragment) getChildFragmentManager().findFragmentById(R.id.map)).getMap();
-        map.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(51.05346, 3.7303799999999682), 14.0f) );
-
-        map.getUiSettings().setZoomControlsEnabled(true);
-        map.getUiSettings().setCompassEnabled(true);
-        map.getUiSettings().setMyLocationButtonEnabled(true);
-        map.getUiSettings().setMapToolbarEnabled(false);
-        map.getUiSettings().setAllGesturesEnabled(true);
-        map.getUiSettings().setRotateGesturesEnabled(false);
     }
 
 
