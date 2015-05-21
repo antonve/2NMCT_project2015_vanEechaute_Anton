@@ -30,6 +30,6 @@ public class GMapFragment extends Fragment {
 
     public void initMap(){
         map = ((MapFragment) getChildFragmentManager().findFragmentById(R.id.map)).getMap();
-        map.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(50.83053, 3.2644599999999855), 14.0f) );
+        map.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(51.05346, 3.7303799999999682), 14.0f) );
     }
 }
