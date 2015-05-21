@@ -31,5 +31,12 @@ public class GMapFragment extends Fragment {
     public void initMap(){
         map = ((MapFragment) getChildFragmentManager().findFragmentById(R.id.map)).getMap();
         map.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(51.05346, 3.7303799999999682), 14.0f) );
+
+        map.getUiSettings().setZoomControlsEnabled(true);
+        map.getUiSettings().setCompassEnabled(true);
+        map.getUiSettings().setMyLocationButtonEnabled(true);
+        map.getUiSettings().setMapToolbarEnabled(false);
+        map.getUiSettings().setAllGesturesEnabled(true);
+        map.getUiSettings().setRotateGesturesEnabled(false);
     }
 }
