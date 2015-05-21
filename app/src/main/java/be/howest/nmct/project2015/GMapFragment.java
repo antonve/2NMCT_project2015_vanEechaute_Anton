@@ -1,7 +1,7 @@
 package be.howest.nmct.project2015;
 
+import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.database.Cursor;
@@ -24,11 +24,24 @@ public class GMapFragment extends Fragment implements LoaderManager.LoaderCallba
 
     private GoogleMap mMap;
     private Cursor mCursor;
+    private onChangeFragmentListener changeFragmentListener;
 
     private final static String TAG_FRAGMENT = "MAP";
 
     public GMapFragment() {
 
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        try {
+            changeFragmentListener = (onChangeFragmentListener) activity;
+        }
+        catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement ChangeFragmentListener");
+        }
     }
 
     @Override
@@ -60,59 +73,29 @@ public class GMapFragment extends Fragment implements LoaderManager.LoaderCallba
         for (int i = 0; i < mCursor.getCount(); i ++) {
             mCursor.moveToPosition(i);
 
-            /*
-
-        public static final String COLUMN_DESCRIPTION = "description";
-        public static final String COLUMN_CODE = "code";
-        public static final String COLUMN_ADDRESS = "address_text";
-        public static final String COLUMN_LAT = "lat";
-        public static final String COLUMN_LNG = "lng";
-        public static final String COLUMN_PHONE_PREFIX = "phone_prefix";
-        public static final String COLUMN_PHONE_NUMBER = "phone_number";
-        public static final String COLUMN_CAPACITY_AVAILABLE = "capacity_available";
-        public static final String COLUMN_CAPACITY_TOTAL = "capacity_total";
-        public static final String COLUMN_FULL = "full";
-        public static final String COLUMN_OPEN = "open";
-             */
-            int     id = mCursor.getInt(0),
-                    capacity_available = mCursor.getInt(8),
-                    capacity_total = mCursor.getInt(9);
-            String  description = mCursor.getString(1),
-                    code = mCursor.getString(2),
-                    address_text = mCursor.getString(3),
-                    phone_prefix = mCursor.getString(6),
-                    phone_number = mCursor.getString(7);
-            boolean full = mCursor.getInt(10) == 1,
-                    open = mCursor.getInt(11) == 1;
-            double  lat = mCursor.getDouble(4),
-                    lng = mCursor.getDouble(5);
+            final ParkingLot parkingLot = ParkingLot.ParkingLotFromCursor(mCursor);
 
 
             float color = BitmapDescriptorFactory.HUE_GREEN;
-            String text = address_text;
+            String text = parkingLot.address_text;
 
-            if (full) {
+            if (parkingLot.full) {
                 color = BitmapDescriptorFactory.HUE_RED;
                 text += " | Full";
             } else {
-                text += " | " + capacity_available + " spots available";
+                text += " | " + parkingLot.capacity_available + " spots available";
             }
 
             mMap.addMarker(new MarkerOptions()
-                    .title(description)
+                    .title(parkingLot.description)
                     .snippet(text)
-                    .position(new LatLng(lat, lng))
+                    .position(new LatLng(parkingLot.lat, parkingLot.lng))
                     .icon(BitmapDescriptorFactory.defaultMarker(color)));
 
             mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                 @Override
                 public void onInfoWindowClick(Marker mark) {
-                    /*
-                    getFragmentManager().beginTransaction()
-                            .replace(R.id.container, new DetailFragment(), "")
-                            .addToBackStack(TAG_FRAGMENT)
-                            .commit();
-                            */
+                    changeFragmentListener.onSelectDetail(parkingLot);
                 }
             });
         }
@@ -140,5 +123,10 @@ public class GMapFragment extends Fragment implements LoaderManager.LoaderCallba
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
+    }
+
+    // communicate with other fragments
+    public interface onChangeFragmentListener {
+        void onSelectDetail(ParkingLot lot);
     }
 }

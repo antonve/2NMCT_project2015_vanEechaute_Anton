@@ -2,16 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="be.howest.nmct.project2015" >
 
-    <!-- Download map tiles van de Google Maps servers ! -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- Staat API toe om te controleren of connectie ok is om data te downloaden ! -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- Staat API toe om map tiles te cachen in externe opslagruimte ! -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!-- Staat API toe om Wi-fi en 3G te gebruiken om locatie te bepalen ! -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!-- Staat API toe om GPS te gebruiken om locatie te bepalen ! -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:allowBackup="true"
