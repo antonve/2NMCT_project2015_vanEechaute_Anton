@@ -1,12 +1,10 @@
 package be.howest.nmct.project2015;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +20,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class DetailFragment extends Fragment {
 
-    public final static String TAG_FRAGMENT = "DETAIL";
     public final static String PARKING_LOT = "PARKING_LOT";
 
     public TextView tvTitle;
